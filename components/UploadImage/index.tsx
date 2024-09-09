@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -16,32 +16,54 @@ import { useToast } from "@/hooks/use-toast"
 import { useResponse } from "@/context/responseContext"
 
 export default function UploadImage() {
-  const { response, setResponse, setImagePlaceholder } = useResponse()
+  const { response, setResponse, setImagePlaceholder, clearAll } = useResponse()
   const [file, setFile] = useState<File | null>(null)
   const [imageUrl, setImageUrl] = useState("")
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const { toast } = useToast()
 
+  useEffect(() => {
+    // Clear local state when clearAll is called
+    const handleClearAll = () => {
+      setFile(null)
+      setImageUrl("")
+      setPreviewUrl(null)
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl)
+      }
+    }
+
+    // Subscribe to clearAll events
+    clearAll.subscribe(handleClearAll)
+
+    // Unsubscribe on component unmount
+    return () => clearAll.unsubscribe(handleClearAll)
+  }, [clearAll, previewUrl])
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0]
     if (selectedFile) {
       setFile(selectedFile)
-      setPreviewUrl(URL.createObjectURL(selectedFile))
+      const localFileUrl = URL.createObjectURL(selectedFile)
+      setPreviewUrl(localFileUrl)
+      setImagePlaceholder(localFileUrl)
       setImageUrl("")
     }
   }
 
   const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setImageUrl(event.target.value)
+    const url = event.target.value
+    setImageUrl(url)
     setFile(null)
-    setPreviewUrl(null)
+    setPreviewUrl(url)
+    setImagePlaceholder(url)
   }
 
-  const analizeimage = async () => {
+  const analyzeImage = async () => {
     const formData = new FormData()
     if (file) {
-      formData.append("file", file)
+      formData.append("image", file)
     } else if (imageUrl) {
       formData.append("url", imageUrl)
     } else {
@@ -85,8 +107,7 @@ export default function UploadImage() {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault()
     setIsLoading(true)
-    setImagePlaceholder(imageUrl)
-    analizeimage()
+    analyzeImage()
   }
 
   return (
@@ -100,7 +121,7 @@ export default function UploadImage() {
             </h1>
             <p className="mt-4 text-gray-600">
               Upload an image and get organized data instantly. Fast, clear, and
-              insightful."
+              insightful.
             </p>
           </div>
           <Card className="w-full max-w-md">

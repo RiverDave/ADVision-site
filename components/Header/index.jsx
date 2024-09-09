@@ -10,55 +10,56 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
 
   const NavItems = () => (
-    <>
-      <li>
-        <Button
-          variant="ghost"
-          className="text-muted-foreground hover:text-primary"
-          asChild
-        >
-          <Link href="/docs">Docs</Link>
-        </Button>
-      </li>
-      <li>
-        <Button
-          variant="ghost"
-          className="text-muted-foreground hover:text-primary"
-          asChild
-        >
-          <Link href="/pricing">Pricing</Link>
-        </Button>
-      </li>
-      <li>
-        <Button
-          variant="ghost"
-          className="text-muted-foreground hover:text-primary"
-          asChild
-        >
-          <Link href="/examples">Examples</Link>
-        </Button>
-      </li>
-      <li>
-        <Button
-          variant="ghost"
-          className="text-muted-foreground hover:text-primary"
-          asChild
-        >
-          <Link href="/login">
-            <LogIn className="mr-2 h-4 w-4" />
-            Login
-          </Link>
-        </Button>
-      </li>
-      <li>
-        <Button asChild>
-          <Link href="/register">
-            <UserPlus className="mr-2 h-4 w-4" />
-            Register
-          </Link>
-        </Button>
-      </li>
-    </>
+    // <>
+    //   <li>
+    //     <Button
+    //       variant="ghost"
+    //       className="text-muted-foreground hover:text-primary"
+    //       asChild
+    //     >
+    //       <Link href="/docs">Docs</Link>
+    //     </Button>
+    //   </li>
+    //   <li>
+    //     <Button
+    //       variant="ghost"
+    //       className="text-muted-foreground hover:text-primary"
+    //       asChild
+    //     >
+    //       <Link href="/pricing">Pricing</Link>
+    //     </Button>
+    //   </li>
+    //   <li>
+    //     <Button
+    //       variant="ghost"
+    //       className="text-muted-foreground hover:text-primary"
+    //       asChild
+    //     >
+    //       <Link href="/examples">Examples</Link>
+    //     </Button>
+    //   </li>
+    //   <li>
+    //     <Button
+    //       variant="ghost"
+    //       className="text-muted-foreground hover:text-primary"
+    //       asChild
+    //     >
+    //       <Link href="/login">
+    //         <LogIn className="mr-2 h-4 w-4" />
+    //         Login
+    //       </Link>
+    //     </Button>
+    //   </li>
+    //   <li>
+    //     <Button asChild>
+    //       <Link href="/register">
+    //         <UserPlus className="mr-2 h-4 w-4" />
+    //         Register
+    //       </Link>
+    //     </Button>
+    //   </li>
+    // </>
+    <></>
   )
 
   return (

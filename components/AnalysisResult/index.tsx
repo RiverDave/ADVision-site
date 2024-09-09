@@ -3,33 +3,34 @@ import ResponseCard from "../Cards/ResponseCard"
 import { useResponse } from "@/context/responseContext"
 import { Button } from "../ui/button"
 import { RotateCcw } from "lucide-react"
+import { MarketingSuggestions } from "@/types/Suggestions"
 
 const AnalysisResult = () => {
-  const { response, imagePlaceholder, setResponse, setImagePlaceholder } =
-    useResponse()
+  const { response, imagePlaceholder, clearAll } = useResponse()
+
+  const handleClearAll = () => {
+    clearAll.trigger()
+  }
 
   if (!response) {
     return null
   }
 
+  const safeResponse = response as MarketingSuggestions
+
   return (
     <>
-      {/* Imagen Placeholder */}
+      {/* Image Placeholder */}
       <div className="flex flex-col items-center justify-center max-w-[50%] mx-auto mt-8 rounded-md overflow-hidden">
-        <img src={imagePlaceholder} alt="placeholder" className="w-full" />
-        {/* Clear data response and Iamge placeholder */}
-        <Button
-          onClick={() => {
-            setResponse(null)
-            setImagePlaceholder("")
-          }}
-          className="mt-4"
-        >
+        {imagePlaceholder && (
+          <img src={imagePlaceholder} alt="placeholder" className="w-full" />
+        )}
+        {/* Clear data response and Image placeholder */}
+        <Button onClick={handleClearAll} className="mt-4">
           <RotateCcw className="h-4 w-4 mr-2" />
           Start Again
         </Button>
       </div>
-
       {/* Analysis Result Section */}
       <div className="mt-8 text-center">
         <h2 className="text-2xl font-semibold">Analysis Result</h2>
@@ -39,94 +40,89 @@ const AnalysisResult = () => {
       </div>
       <div className="mt-8 grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pb-8">
         {/* Cards */}
-        <ResponseCard title="Advertisement" content={response.advertisement} />
+        <ResponseCard
+          title="Advertisement"
+          content={safeResponse.advertisement}
+        />
         <ResponseCard
           title="Call to Action"
-          content={response.call_to_action}
+          content={safeResponse.call_to_action}
         />
-        <ResponseCard title="Alt Text" content={response.alt_text} />
+        <ResponseCard title="Alt Text" content={safeResponse.alt_text} />
         <ResponseCard
           title="Product Suggestions"
           content={
             <ul>
-              {response.product_suggestions.map((product, index) => (
+              {safeResponse.product_suggestions?.map((product, index) => (
                 <li key={index}>{product}</li>
-              ))}
+              )) ?? "No product suggestions available"}
             </ul>
           }
         />
-
         <ResponseCard
           title="Target Audience Insights"
-          content={response.target_audience_insights}
+          content={safeResponse.target_audience_insights}
         />
-
         <ResponseCard
           title="Emotional Tone Analysis"
-          content={response.emotional_tone_analysis}
+          content={safeResponse.emotional_tone_analysis}
         />
-
         <ResponseCard
           title="SEO Keywords"
           content={
             <ul>
-              {response.seo_keywords.map((keyword, index) => (
+              {safeResponse.seo_keywords?.map((keyword, index) => (
                 <li key={index}>{keyword}</li>
-              ))}
+              )) ?? "No SEO keywords available"}
             </ul>
           }
         />
-
         <ResponseCard
           title="Social Media Caption"
-          content={response.social_media_caption}
+          content={safeResponse.social_media_caption}
         />
-
         <ResponseCard
           title="Content Ideas"
           content={
             <ul>
-              {response.content_ideas.map((idea, index) => (
+              {safeResponse.content_ideas?.map((idea, index) => (
                 <li key={index}>{idea}</li>
-              ))}
+              )) ?? "No content ideas available"}
             </ul>
           }
         />
-
         {/* Hashtags as list */}
         <ResponseCard
           title="Hashtags"
           content={
             <ul>
-              {response.hashtags.map((hashtag, index) => (
+              {safeResponse.hashtags?.map((hashtag, index) => (
                 <li key={index}>{hashtag}</li>
-              ))}
+              )) ?? "No hashtags available"}
             </ul>
           }
         />
-
         {/* Marketing Strategy Tips */}
         <ResponseCard
           title="Marketing Strategy Tips"
-          content={response.marketing_strategy_tips}
+          content={safeResponse.marketing_strategy_tips}
         />
-
         <ResponseCard
           title="Image Enhancement Suggestions"
-          content={response.image_enhancement_suggestions}
+          content={safeResponse.image_enhancement_suggestions}
         />
-
         <ResponseCard
           title="Cultural Adaptations"
-          content={response.cultural_adaptations}
+          content={safeResponse.cultural_adaptations}
         />
-
         <ResponseCard
           title="Legal & Ethical Considerations"
-          content={response.legal_ethical_considerations}
+          content={safeResponse.legal_ethical_considerations}
         />
-
-        <ResponseCard title="Emojis" content={response.emojis.join(" ")} />
+        <ResponseCard
+          title="Emojis"
+          content={safeResponse.emojis?.join(" ") ?? "No emojis available"}
+        />
       </div>
     </>
   )
