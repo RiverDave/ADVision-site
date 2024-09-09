@@ -1,14 +1,9 @@
 import { NextRequest, NextResponse } from "next/server"
 
-//TODO: Use .env later
-const prod = false
-
-const URL = prod
-  ? "https://advision-api-918900764545.us-central1.run.app/imgtoad"
-  : "http://localhost:8080/imgtoad"
-
 export async function POST(req: NextRequest) {
+  const URL = process.env.API_URL || "http://localhost:8080/imgtoad"
   try {
+    console.log("URL ", URL)
     const formData = await req.formData()
     const image = formData.get("image")
     const url = formData.get("url")
